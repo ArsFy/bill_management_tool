@@ -1,4 +1,4 @@
-module bill_tool
+module bmtool_server
 
 go 1.17
 

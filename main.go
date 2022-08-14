@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var version string = "0.1"
+
 // HTTP
 func cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -15,7 +17,7 @@ func cors() gin.HandlerFunc {
 }
 
 func status(c *gin.Context) {
-	c.JSON(200, gin.H{"status": 200, "version": config["version"].(string)})
+	c.JSON(200, gin.H{"status": 200, "version": version})
 }
 
 func main() {
@@ -36,6 +38,6 @@ func main() {
 	router.POST("/api/create_obj", createObj)
 
 	// Run
-	fmt.Printf("BMTool v%s Starting :%s ...\n", config["version"].(string), config["port"].(string))
+	fmt.Printf("BMTool v%s Starting :%s ...\n", version, config["port"].(string))
 	router.Run(":" + config["port"].(string))
 }
