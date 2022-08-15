@@ -36,6 +36,8 @@ func main() {
 	// API
 	router.POST("/api/obj_list", objList)
 	router.POST("/api/create_obj", createObj)
+	router.POST("/api/is_obj_exist", isObjExist)
+	router.POST("/api/add_record", addRecord)
 
 	// Run
 	fmt.Printf("BMTool v%s Starting :%s ...\n", version, config["port"].(string))
