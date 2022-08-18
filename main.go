@@ -38,6 +38,8 @@ func main() {
 	router.POST("/api/create_obj", createObj)
 	router.POST("/api/is_obj_exist", isObjExist)
 	router.POST("/api/add_record", addRecord)
+	router.POST("/api/get_record", getRecord)
+	router.POST("/api/get_record_year", getRecordYear)
 
 	// Run
 	fmt.Printf("BMTool v%s Starting :%s ...\n", version, config["port"].(string))

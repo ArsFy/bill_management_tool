@@ -11,6 +11,7 @@ import (
 type ConfigType struct {
 	Init   bool   `json:"init"`
 	Server string `json:"server"`
+	Last   string `json:"last"`
 }
 
 var config ConfigType
@@ -26,6 +27,8 @@ func init() {
 		fmt.Println("Config error:", "Formatting error, use default config")
 		return
 	}
+
+	use = config.Last
 }
 
 func configUpdata() {

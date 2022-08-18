@@ -83,3 +83,76 @@ func addRecord(c *gin.Context) {
 	updataData(name, data)
 	c.JSON(200, gin.H{"status": 200})
 }
+
+func getRecord(c *gin.Context) {
+	name := c.PostForm("name")
+	user := c.PostForm("user")
+
+	var am int = 0
+	var in int = 0
+	var out int = 0
+
+	data, err := readData(name)
+	if err != nil {
+		c.JSON(200, gin.H{"status": 500, "err": "isNotExist"})
+		return
+	}
+	m := data[fmt.Sprint(time.Now().Year())][time.Now().Format("01")]
+	for _, j := range m {
+		for _, jj := range j {
+			if user == jj.User || user == "" {
+				am += jj.Change
+				if jj.Change > 0 {
+					in += jj.Change
+				} else {
+					out -= jj.Change
+				}
+			}
+		}
+	}
+
+	var lm int = 0
+	lastTime := time.Now().AddDate(0, -1, 0)
+	lastM := data[fmt.Sprint(lastTime.Year())][lastTime.Format("01")]
+	for _, j := range lastM {
+		for _, jj := range j {
+			if user == jj.User || user == "" {
+				lm += jj.Change
+			}
+		}
+	}
+
+	c.JSON(200, gin.H{"status": 200, "data": m, "am": am, "in": in, "out": out, "lm": lm})
+}
+
+func getRecordYear(c *gin.Context) {
+	name := c.PostForm("name")
+	user := c.PostForm("user")
+
+	var am int = 0
+	var in int = 0
+	var out int = 0
+
+	data, err := readData(name)
+	if err != nil {
+		c.JSON(200, gin.H{"status": 500, "err": "isNotExist"})
+		return
+	}
+	m := data[fmt.Sprint(time.Now().Year())]
+	for _, j := range m {
+		for _, jj := range j {
+			for _, jjj := range jj {
+				if user == jjj.User || user == "" {
+					am += jjj.Change
+					if jjj.Change > 0 {
+						in += jjj.Change
+					} else {
+						out -= jjj.Change
+					}
+				}
+			}
+		}
+	}
+
+	c.JSON(200, gin.H{"status": 200, "data": m, "am": am, "in": in, "out": out})
+}

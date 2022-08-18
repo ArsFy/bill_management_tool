@@ -33,6 +33,9 @@ func main() {
 	}
 
 	fmt.Printf("BMTool tool-cli v%s, try 'help' for more information.", v)
+	if use != "" {
+		fmt.Printf("\nLast use: %s", use)
+	}
 	for {
 		fmt.Printf("\nBMTool> ")
 		var command string = ""
@@ -41,7 +44,12 @@ func main() {
 
 		switch command {
 		case "help":
-			fmt.Printf("help")
+			fmt.Printf(
+				`list              - List all obj
+create <obj_name> - Create a new obj
+use <obj_name>    - Set default use obj
+add [Operator Name] [+123 or -123] [what is it used for] [Timestamp (optional)] - Add Obj
+info/year         - Query data`)
 		case "list":
 			list()
 		case "create":
@@ -59,7 +67,7 @@ func main() {
 		case "add":
 			if value[0] != "" && value[1] != "" && value[2] != "" {
 				if use != "" {
-					changeNumber, _ := strconv.Atoi(value[1])
+					changeNumber, _ := strconv.ParseFloat(value[1], 64)
 					var timestamp int = -1
 					if value[3] != "" {
 						timestamp, _ = strconv.Atoi(value[3])
@@ -71,8 +79,20 @@ func main() {
 			} else {
 				fmt.Printf("input value missing: 'add [Operator Name] [+123 or -123] [what is it used for] [Timestamp (optional)]'")
 			}
+		case "info":
+			if use != "" {
+				info(value[0])
+			} else {
+				fmt.Printf("must be selected an obj to use: 'use obj_name'")
+			}
+		case "year":
+			if use != "" {
+				year(value[0])
+			} else {
+				fmt.Printf("must be selected an obj to use: 'use obj_name'")
+			}
 		default:
-			fmt.Printf("'%s' not found", command)
+			fmt.Printf("Command '%s' not found", command)
 		}
 	}
 }
